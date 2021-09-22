@@ -1,4 +1,4 @@
-name: Slack Notification
+name: teascanner-notification
 description: 'Action to manage slack notification'
 inputs:
    slack-signing-secret:
