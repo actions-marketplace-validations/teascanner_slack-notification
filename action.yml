@@ -1,5 +1,8 @@
 name: teascanner-notification
 description: 'Action to manage slack notification'
+branding:
+  icon: activity
+  color: green
 inputs:
    slack-signing-secret:
      description: 'Slack Signing Secret'
