@@ -52101,20 +52101,15 @@ const teascannerApp = core.getInput('teascanner-heroku-app');
 console.log(statusDeployment);
 const payload = github.context.payload;
 
-initDeploy = async () => {
-    await app.client.chat.postMessage({
+initDeploy = () =>  app.client.chat.postMessage({
         channel: channelId,
-        blocks: [DEPLOY_INIT(payload)] }
-    )
-}
+        text: `${payload.repository.name} is deploying...`,
+        blocks: [DEPLOY_INIT(payload)] });
 
-feedbackDeploy = async (slackMessage) => {
-    await app.client.chat.postMessage({
+feedbackDeploy = () =>  app.client.chat.postMessage({
         channel: channelId,
         text: `${payload.repository.name} has been deployed` ,
-        attachments: [slackMessage]
-    })
-}
+        attachments: [slackMessage]});
 
 
 (async () => {
