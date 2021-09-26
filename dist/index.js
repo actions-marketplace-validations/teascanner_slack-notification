@@ -131,18 +131,21 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony export */ });
 const DEPLOY_INIT = (payload) => {
     return {
-
-        "type": "section",
-        "text": {
-            "type": "mrkdwn",
-            "text": `*${payload.repository.full_name} is deploying...*`
-        },
-        "accessory": {
-            "type": "image",
-            "image_url": "https://media4.giphy.com/media/xTkcEQACH24SMPxIQg/giphy.gif?cid=ecf05e47kpv37pdsny9ruerjn0p4t1u0brd9o3cuqit4jswx&rid=giphy.gif&ct=g",
-            "alt_text": "cute cat"
-        }
-
+        "color": "#f2c744",
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `*${payload.repository.full_name} is deploying...*`
+                },
+                "accessory": {
+                    "type": "image",
+                    "image_url": "https://media4.giphy.com/media/xTkcEQACH24SMPxIQg/giphy.gif?cid=ecf05e47kpv37pdsny9ruerjn0p4t1u0brd9o3cuqit4jswx&rid=giphy.gif&ct=g",
+                    "alt_text": "cute cat"
+                }
+            }
+        ]
     }
 }
 
@@ -52081,7 +52084,7 @@ module.exports = require("zlib");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const { App: Index } = __nccwpck_require__(6847);
+const {App: Index} = __nccwpck_require__(6847);
 const core = __nccwpck_require__(5127);
 const github = __nccwpck_require__(3134);
 const {DEPLOY_SUCCESSFUL} = __nccwpck_require__(9295);
@@ -52092,8 +52095,8 @@ const slackToken = core.getInput('slack-bot-token');
 const slackSigningSecret = core.getInput('slack-signing-secret');
 const action = core.getInput('action');
 const app = new Index({
-  token: slackToken,
-  signingSecret: slackSigningSecret
+    token: slackToken,
+    signingSecret: slackSigningSecret
 });
 const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
@@ -52101,26 +52104,32 @@ const teascannerApp = core.getInput('teascanner-heroku-app');
 console.log(statusDeployment);
 const payload = github.context.payload;
 
-initDeploy = () =>  app.client.chat.postMessage({
-        channel: channelId,
-        text: `${payload.repository.name} is deploying...`,
-        blocks: [DEPLOY_INIT(payload)] });
+initDeploy = () => app.client.chat.postMessage({
+    channel: channelId,
+    text: `${payload.repository.name} is deploying...`,
+    attachments: [DEPLOY_INIT(payload)]
+});
 
-feedbackDeploy = () =>  app.client.chat.postMessage({
-        channel: channelId,
-        text: `${payload.repository.name} has been deployed` ,
-        attachments: [slackMessage]});
+feedbackDeploy = () => app.client.chat.postMessage({
+    channel: channelId,
+    text: `${payload.repository.name} has been deployed`,
+    attachments: [slackMessage]
+});
 
+deleteMessage = (ts) => app.client.chat.delete({
+    channel: channelId,
+    ts
+});
 
+let messageInit;
 (async () => {
-    switch(action) {
+    switch (action) {
         case 'INIT':
-            let messageInit = await initDeploy();
-            console.log(messageInit);
+            messageInit = await initDeploy();
             break;
         case 'DEPLOYED':
+            deleteMessage(messageInit.ts);
             let message = await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
-            console.log(message);
             break;
     }
 })()
