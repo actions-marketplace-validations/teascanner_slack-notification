@@ -17,17 +17,6 @@ const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
 console.log(statusDeployment);
 const payload = github.context.payload;
-switch(action) {
-    case 'INIT':
-        message = initDeploy();
-        console.log(message);
-        break;
-    case 'DEPLOYED':
-        message = feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
-        console.log(message);
-        break;
-}
-
 
 initDeploy = async () => {
     await app.client.chat.postMessage({
@@ -43,4 +32,16 @@ feedbackDeploy = async (slackMessage) => {
         text: `${payload.repository.name} has been deployed` ,
         attachments: [slackMessage]
     })
+}
+
+
+switch(action) {
+    case 'INIT':
+        message = initDeploy();
+        console.log(message);
+        break;
+    case 'DEPLOYED':
+        message = feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
+        console.log(message);
+        break;
 }
