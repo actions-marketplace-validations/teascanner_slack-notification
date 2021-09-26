@@ -4,22 +4,25 @@ branding:
   icon: activity
   color: green
 inputs:
-   slack-signing-secret:
-     description: 'Slack Signing Secret'
-     required: true
-     default: 'registry.dev.json'
-   slack-bot-token:
-     description: 'Slack Bot Token'
-     required: true
-   deployment-result:
-     description: 'Deployment Result'
-     required: true
-   teascanner-heroku-app:
-     description: 'Teascanner Heroku App'
-     required: true
-   slack-channel-id:
-     description: 'Slack Channel ID'
-     required: true
+  slack-signing-secret:
+    description: 'Slack Signing Secret'
+    required: true
+    default: 'registry.dev.json'
+  slack-bot-token:
+    description: 'Slack Bot Token'
+    required: true
+  deployment-result:
+    description: 'Deployment Result'
+    required: true
+  teascanner-heroku-app:
+    description: 'Teascanner Heroku App'
+    required: true
+  slack-channel-id:
+    description: 'Slack Channel ID'
+    required: true
+  action:
+    description: 'Action to be excetuted'
+    required: true
 runs:
   using: 'node12'
   main: './dist/index.js'

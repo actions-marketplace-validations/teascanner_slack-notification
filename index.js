@@ -1,10 +1,13 @@
 const { App: Index } = require('@slack/bolt');
 const core = require('@actions/core');
 const github = require('@actions/github');
+const {DEPLOY_SUCCESSFUL} = require("./message/deploy_successful");
+const {DEPLOY_INIT} = require("./message/deploy_init");
 
 // Initializes your app with your bot token and signing secret
 const slackToken = core.getInput('slack-bot-token');
 const slackSigningSecret = core.getInput('slack-signing-secret');
+const action = core.getInput('action');
 const app = new Index({
   token: slackToken,
   signingSecret: slackSigningSecret
@@ -12,55 +15,32 @@ const app = new Index({
 const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
+console.log(statusDeployment);
+const payload = github.context.payload;
+switch(action) {
+    case 'INIT':
+        message = initDeploy();
+        console.log(message);
+        break;
+    case 'DEPLOYED':
+        message = feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
+        console.log(message);
+        break;
+}
 
-( async () => {
-  // Start your app
-  const payload = github.context.payload;
-  console.log(statusDeployment)
-  await app.client.chat.postMessage({
-      channel: channelId,
-      text: `${payload.repository.name} has been deployed` ,
-      attachments: [
-		{
-			"color": "#b5e48c",
-			"blocks": [
-				{
-					"type": "context",
-					"elements": [
-						{
-							"type": "image",
-							"image_url": `${payload.sender.avatar_url}`,
-							"alt_text": "images"
-						},
-						{
-							"type": "mrkdwn",
-							"text": `<${payload.sender.html_url} | *${payload.sender.login}*>`
-						}
-					]
-				},
-				{
-					"type": "section",
-					"text": {
-						"type": "mrkdwn",
-						"text": `Successfully deployed <${payload.head_commit.url} | ${payload.head_commit.id.substring(0, 7)}> to ${teascannerApp}`
-					}
-				},
-				{
-					"type": "context",
-					"elements": [
-						{
-							"type": "image",
-							"image_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-							"alt_text": "images"
-						},
-						{
-							"type": "mrkdwn",
-							"text": `<${payload.repository.html_url} | ${payload.repository.full_name}>`
-						}
-					]
-				}
-			]
-		}
-	]
-  })
-})();
+
+initDeploy = async () => {
+    await app.client.chat.postMessage({
+        channel: channelId,
+        text: `${payload.repository.name} has been deployed` ,
+        blocks: [DEPLOY_INIT(payload)] }
+    )
+}
+
+feedbackDeploy = async (slackMessage) => {
+    await app.client.chat.postMessage({
+        channel: channelId,
+        text: `${payload.repository.name} has been deployed` ,
+        attachments: [slackMessage]
+    })
+}
