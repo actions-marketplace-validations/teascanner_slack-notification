@@ -52128,7 +52128,7 @@ let messageInit;
             messageInit = await initDeploy();
             break;
         case 'DEPLOYED':
-            deleteMessage(messageInit.ts);
+            //deleteMessage(messageInit.ts);
             let message = await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
             break;
     }
