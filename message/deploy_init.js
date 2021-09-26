@@ -5,7 +5,7 @@ export const DEPLOY_INIT = (payload) => {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": `*<${payload.repository.html_url} | ${payload.repository.full_name}> is deploying...*`
+                    "text": `*${payload.repository.full_name} is deploying...*`
                 },
                 "accessory": {
                     "type": "image",

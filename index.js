@@ -21,7 +21,6 @@ const payload = github.context.payload;
 initDeploy = async () => {
     await app.client.chat.postMessage({
         channel: channelId,
-        text: `${payload.repository.name} has been deployed` ,
         blocks: [DEPLOY_INIT(payload)] }
     )
 }
@@ -35,13 +34,15 @@ feedbackDeploy = async (slackMessage) => {
 }
 
 
-switch(action) {
-    case 'INIT':
-        message = initDeploy();
-        console.log(message);
-        break;
-    case 'DEPLOYED':
-        message = feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
-        console.log(message);
-        break;
-}
+(async () => {
+    switch(action) {
+        case 'INIT':
+            let messageInit = await initDeploy();
+            console.log(messageInit);
+            break;
+        case 'DEPLOYED':
+            let message = await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
+            console.log(message);
+            break;
+    }
+})()
