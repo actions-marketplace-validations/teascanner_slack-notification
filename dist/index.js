@@ -52112,7 +52112,7 @@ initDeploy = () => app.client.chat.postMessage({
     attachments: [DEPLOY_INIT(payload)]
 });
 
-feedbackDeploy = () => app.client.chat.postMessage({
+feedbackDeploy = (slackMessage) => app.client.chat.postMessage({
     channel: channelId,
     text: `${payload.repository.name} has been deployed`,
     attachments: [slackMessage]
