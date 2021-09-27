@@ -39,10 +39,12 @@ let messageInit;
 (async () => {
     switch (action) {
         case 'INIT':
-            messageInit = await initDeploy();
-            core.debug(messageInit);
-            console.log(messageInit);
-            core.setOutput("message", "pippo");
+            initDeploy().then(
+                (messageInit) => {
+                    console.log(messageInit);
+                    core.setOutput("message", messageInit);
+                }
+            );
             break;
         case 'DEPLOYED':
             if (message) await deleteMessage(message.ts);
