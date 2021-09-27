@@ -52102,8 +52102,6 @@ const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
 const message = core.getInput('message');
-core.debug(message)
-core.debug(statusDeployment)
 const payload = github.context.payload;
 
 initDeploy = () => app.client.chat.postMessage({
@@ -52125,14 +52123,12 @@ deleteMessage = (ts) => app.client.chat.delete({
 
 let messageInit;
 (async () => {
-    core.debug(message)
-    core.debug(statusDeployment)
-    console.log(message);
-    console.log(statusDeployment);
     switch (action) {
         case 'INIT':
             messageInit = await initDeploy();
-            core.setOutput("message", messageInit);
+            core.debug(messageInit);
+            console.log(messageInit);
+            core.setOutput("message", "pippo");
             break;
         case 'DEPLOYED':
             if (message) await deleteMessage(message.ts);
