@@ -23,7 +23,7 @@ inputs:
   action:
     description: 'Action to be excetuted'
     required: true
-  message-slack:
+  message-output:
     description: 'Slack Message Object'
     required: false
 outputs:

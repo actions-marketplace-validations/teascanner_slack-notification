@@ -15,7 +15,7 @@ const app = new Index({
 const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
-const message = core.getInput('message-slack');
+const message = core.getInput('message-output');
 const payload = github.context.payload;
 
 initDeploy = () => app.client.chat.postMessage({
