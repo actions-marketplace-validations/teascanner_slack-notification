@@ -52128,7 +52128,7 @@ let messageInit;
             initDeploy().then(
                 (messageInit) => {
                     console.log(messageInit);
-                    core.setOutput("message-slack", messageInit);
+                    core.setOutput("message-slack", messageInit.ts);
                 }
             );
             break;
