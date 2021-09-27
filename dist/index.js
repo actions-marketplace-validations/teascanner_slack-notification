@@ -52133,7 +52133,7 @@ let messageInit;
             );
             break;
         case 'DEPLOYED':
-            if (message) await deleteMessage(message.ts);
+            if (message) await deleteMessage(message);
             await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
             break;
     }
