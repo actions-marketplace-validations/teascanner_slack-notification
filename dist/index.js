@@ -52102,6 +52102,7 @@ const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
 const message = core.getInput('message');
+console.log(message);
 console.log(statusDeployment);
 const payload = github.context.payload;
 
@@ -52130,8 +52131,7 @@ let messageInit;
             core.setOutput("message", messageInit);
             break;
         case 'DEPLOYED':
-            console.log(message);
-            deleteMessage(message.ts);
+            if (message) await deleteMessage(message.ts);
             await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
             break;
     }
