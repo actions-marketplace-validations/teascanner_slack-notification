@@ -23,6 +23,12 @@ inputs:
   action:
     description: 'Action to be excetuted'
     required: true
+  message:
+    description: 'Slack Message Object'
+    required: false
+outputs:
+  message: # id of output
+    description: 'Slack Message Object'
 runs:
   using: 'node12'
   main: './dist/index.js'

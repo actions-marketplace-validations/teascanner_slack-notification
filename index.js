@@ -15,6 +15,7 @@ const app = new Index({
 const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
+const message = core.getInput('message');
 console.log(statusDeployment);
 const payload = github.context.payload;
 
@@ -40,10 +41,12 @@ let messageInit;
     switch (action) {
         case 'INIT':
             messageInit = await initDeploy();
+            core.setOutput("message", messageInit);
             break;
         case 'DEPLOYED':
-            //deleteMessage(messageInit.ts);
-            let message = await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
+            console.log(message);
+            deleteMessage(message.ts);
+            await feedbackDeploy(DEPLOY_SUCCESSFUL(payload, teascannerApp));
             break;
     }
 })()
