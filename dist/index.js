@@ -52102,8 +52102,8 @@ const channelId = core.getInput('slack-channel-id');
 const statusDeployment = core.getInput('deployment-results');
 const teascannerApp = core.getInput('teascanner-heroku-app');
 const message = core.getInput('message');
-core.error(message)
-core.error(statusDeployment)
+core.debug(message)
+core.debug(statusDeployment)
 const payload = github.context.payload;
 
 initDeploy = () => app.client.chat.postMessage({
