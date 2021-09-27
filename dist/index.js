@@ -52125,6 +52125,10 @@ deleteMessage = (ts) => app.client.chat.delete({
 
 let messageInit;
 (async () => {
+    core.debug(message)
+    core.debug(statusDeployment)
+    console.log(message);
+    console.log(statusDeployment);
     switch (action) {
         case 'INIT':
             messageInit = await initDeploy();
